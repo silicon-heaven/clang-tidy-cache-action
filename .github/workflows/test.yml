@@ -1,0 +1,77 @@
+name: Lint
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  test-caching:
+    name: Test caching
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Clone the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install apt packages
+        uses: awalsh128/cache-apt-pkgs-action@v1.4.2
+        with:
+          packages: bear
+          version: 1.0
+
+      - name: Set up clang-tidy-cache
+        uses: ./
+
+      - name: Set up test files
+        run: |
+          echo "int x = $RANDOM;" > test.cpp
+          bear -- clang++ -c test.cpp
+          clang-tidy-cache --show-stats | grep "Hit count.* 0"
+
+      - name: Run the linter
+        run: |
+          clang-tidy-cache clang-tidy test.cpp
+
+      - name: Test
+        run: |
+          clang-tidy-cache --show-stats | grep "Hit count.* 0"
+
+      - name: Run the linter again
+        run: |
+          clang-tidy-cache clang-tidy test.cpp
+
+      - name: Test again
+        run: |
+          clang-tidy-cache --show-stats | grep "Hit count.* 1"
+
+  test-cache-loading:
+    name: Test caching
+    runs-on: ubuntu-22.04
+    needs: [test-caching]
+    steps:
+      - name: Clone the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install apt packages
+        uses: awalsh128/cache-apt-pkgs-action@v1.4.2
+        with:
+          packages: bear
+          version: 1.0
+
+      - name: Set up clang-tidy-cache
+        uses: ./
+
+      - name: Test
+        run: |
+          clang-tidy-cache --show-stats | grep "Hit count.* 1"
+
+      - name: Run the linter again
+        run: |
+          clang-tidy-cache clang-tidy test.cpp
+
+      - name: Test again
+        run: |
+          clang-tidy-cache --show-stats | grep "Hit count.* 2"
