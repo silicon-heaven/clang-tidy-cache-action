@@ -1,10 +1,10 @@
-name: Lint
+name: Test
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   test-caching:
@@ -23,11 +23,15 @@ jobs:
 
       - name: Set up clang-tidy-cache
         uses: ./
+        with:
+          key: test-cache-loading
 
       - name: Set up test files
         run: |
+          clang-tidy-cache --show-stats
           echo "int x = $RANDOM;" > test.cpp
           bear -- clang++ -c test.cpp
+          clang-tidy-cache --clean
           clang-tidy-cache --show-stats | grep "Hit count.* 0"
 
       - name: Run the linter
@@ -46,6 +50,7 @@ jobs:
         run: |
           clang-tidy-cache --show-stats | grep "Hit count.* 1"
 
+
   test-cache-loading:
     name: Test caching
     runs-on: ubuntu-22.04
@@ -63,6 +68,8 @@ jobs:
 
       - name: Set up clang-tidy-cache
         uses: ./
+        with:
+          key: test-cache-loading
 
       - name: Test
         run: |
