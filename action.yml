@@ -47,3 +47,7 @@ runs:
         key: ctcache-${{ inputs.key }}-${{ env.CTCACHE_NOW }}
         path: ${{github.workspace}}/.ctcache
         restore-keys: ctcache-${{ github.job }}-
+
+branding:
+  icon: "archive"
+  color: "gray-dark"
