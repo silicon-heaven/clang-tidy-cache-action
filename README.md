@@ -1,5 +1,5 @@
 # clang-tidy-cache for GitHub Actions
-This action downloads and sets up [clang-tidy-cache](https://github.com/matus-chochlik/ctcache) for use on GitHub Actions. This action has been inspired by [hendrikmuhs/ccache-action](https://github.com/hendrikmuhs/ccache-action).
+This action downloads and sets up [clang-tidy-cache](https://github.com/matus-chochlik/ctcache) for use on GitHub Actions. This action was inspired by [hendrikmuhs/ccache-action](https://github.com/hendrikmuhs/ccache-action).
 
 ## Usage
 ```yaml
