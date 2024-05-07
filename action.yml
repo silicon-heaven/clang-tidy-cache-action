@@ -27,7 +27,7 @@ inputs:
   key:
     description: "An additional key for the ctcache"
     required: false
-    default: ${{ github.job }}
+    default: ${{ github.workflow }}-${{ github.job }}
 
 runs:
   using: "composite"
