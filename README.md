@@ -22,7 +22,7 @@ jobs:
           submodules: true
 
       - name: Set up clang-tidy-cache
-        uses: silicon-heaven/clang-tidy-cache-action@v1.1.1
+        uses: silicon-heaven/clang-tidy-cache-action@v1.2.0
 
       - name: Run the linter
         shell: bash
