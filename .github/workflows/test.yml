@@ -52,7 +52,7 @@ jobs:
 
 
   test-cache-loading:
-    name: Test caching
+    name: Test cache loading
     runs-on: ubuntu-22.04
     needs: [test-caching]
     steps:
